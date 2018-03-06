@@ -1,0 +1,25 @@
+{
+  "name": "dybasedev/database",
+  "description": "数据库组件",
+  "minimum-stability": "stable",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "chongyi",
+      "email": "chongyi@xopns.com"
+    }
+  ],
+  "require": {
+    "phpunit/phpunit": "~6.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Dybasedev\\Database\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Dybasedev\\Test\\Database\\": "tests/"
+    }
+  }
+}
