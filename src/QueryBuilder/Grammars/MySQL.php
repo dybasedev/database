@@ -27,14 +27,14 @@ class MySQL extends Grammar
     {
         $structures = $select->getStructures();
 
-        $statements[] = $this->compileSelect($structures['select']);
+        $statements[] = $this->compileSelect($structures[Grammar::STRUCTURE_SELECT]);
 
-        if (isset($structures['from'])) {
-            $statements[] = $this->compileFrom($structures['from']);
+        if (isset($structures[Grammar::STRUCTURE_FROM])) {
+            $statements[] = $this->compileFrom($structures[Grammar::STRUCTURE_FROM]);
         }
 
-        if (isset($structures['where'])) {
-            $statements[] = $this->compileWhereConditions($structures['where']);
+        if (isset($structures[Grammar::STRUCTURE_WHERE])) {
+            $statements[] = $this->compileWhereConditions($structures[Grammar::STRUCTURE_WHERE]);
         }
 
         return implode(' ', $statements);
@@ -92,7 +92,7 @@ class MySQL extends Grammar
         $conditions = [];
         foreach ($structure as list($type, $data, $boolean)) {
             switch ($type) {
-                case 'comparison':
+                case Grammar::SUB_TYPE_COMPARISON:
                     list($column, $operator, $value) = $data;
                     $expression = sprintf(
                         '%s %s %s', $this->wrapReference($column), $operator, $this->wrapValue($value)
@@ -101,15 +101,15 @@ class MySQL extends Grammar
                     $conditions[] = ($booleanSymbol ? "{$boolean} " : '') . $expression;
                     $booleanSymbol = true;
                     break;
-                case 'nested-o':
+                case Grammar::SUB_TYPE_NESTED_OPEN:
                     $conditions[] = ($booleanSymbol ? "{$boolean} " : '') . '(';
                     $booleanSymbol = false;
                     break;
-                case 'nested-c':
+                case Grammar::SUB_TYPE_NESTED_CLOSE:
                     $conditions[] = ')';
                     $booleanSymbol = true;
                     break;
-                case 'boolean':
+                case Grammar::SUB_TYPE_BOOLEAN:
                     list($column, $symbol) = $data;
                     $conditions[] = ($booleanSymbol ? "{$boolean} " : '') . $this->wrapReference($column) . ' ' . $symbol;
                     $booleanSymbol = true;

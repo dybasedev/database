@@ -10,12 +10,13 @@ namespace Dybasedev\Database\QueryBuilder\Traits;
 
 
 use Closure;
+use Dybasedev\Database\QueryBuilder\Grammars\Grammar;
 
 trait WhereConditions
 {
     public function where($column, $operator, $value, $boolean = 'and')
     {
-        $this->structures['where'][] = ['comparison', [$column, $operator, $value], $boolean];
+        $this->structures['where'][] = [Grammar::SUB_TYPE_COMPARISON, [$column, $operator, $value], $boolean];
 
         return $this;
     }
@@ -27,11 +28,11 @@ trait WhereConditions
 
     public function whereNested(Closure $callback, $boolean = 'and')
     {
-        $this->structures['where'][] = ['nested-o', null, $boolean];
+        $this->structures['where'][] = [Grammar::SUB_TYPE_NESTED_OPEN, null, $boolean];
 
         ($callback)($this);
 
-        $this->structures['where'][] = ['nested-c', null, null];
+        $this->structures['where'][] = [Grammar::SUB_TYPE_NESTED_CLOSE, null, null];
 
         return $this;
     }
@@ -45,7 +46,7 @@ trait WhereConditions
     {
         $symbol = $isNull ? 'is null' : 'is not null';
 
-        $this->structures['where'][] = ['boolean', [$column, $symbol], $boolean];
+        $this->structures['where'][] = [Grammar::SUB_TYPE_BOOLEAN, [$column, $symbol], $boolean];
 
         return $this;
     }
@@ -69,7 +70,7 @@ trait WhereConditions
     {
         $symbol = $not ? 'not in' : 'in';
 
-        $this->structures['where'][] = ['predicate', [$column, $symbol, $values], $boolean];
+        $this->structures['where'][] = [Grammar::SUB_TYPE_PREDICATE, [$column, $symbol, $values], $boolean];
 
         return $this;
     }
