@@ -372,4 +372,27 @@ abstract class Connection extends BaseConnection
 
         $binder($statement);
     }
+
+    /**
+     * @param string $modelName
+     * @param        $statement
+     * @param array  $binder
+     * @param null   $fetcher
+     *
+     * @return mixed
+     * @throws Throwable
+     */
+    public function selectModels(string $modelName, $statement, $binder = [], $fetcher = null)
+    {
+        return $this->process($statement, function (PDOStatement $prepared) use ($binder, $fetcher, $modelName) {
+            $this->bindValues($prepared, $binder);
+            $prepared->execute();
+
+            if (is_null($fetcher)) {
+                return $prepared->fetchAll(PDO::FETCH_CLASS, $modelName);
+            }
+
+            return ($fetcher)($prepared, $modelName);
+        });
+    }
 }
