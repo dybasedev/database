@@ -11,7 +11,8 @@
   ],
   "require": {
     "phpunit/phpunit": "~6.0",
-    "dybasedev/keeper-contracts": "~1.0"
+    "dybasedev/keeper-contracts": "~1.0",
+    "illuminate/support": "~5.5"
   },
   "autoload": {
     "psr-4": {
