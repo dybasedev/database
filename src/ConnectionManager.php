@@ -18,7 +18,7 @@ abstract class ConnectionManager
     protected $config;
 
     /**
-     * @var array
+     * @var array|Connection[]
      */
     protected $connections;
 
@@ -59,7 +59,10 @@ abstract class ConnectionManager
             $name = $this->getDefaultConnection();
         }
 
-        return $this->connections[$name] = $this->createConnection($name);
+        $this->connections[$name] = $this->createConnection($name);
+        $this->connections[$name]->connect();
+
+        return $this->connections[$name];
     }
 
     /**

@@ -18,7 +18,7 @@ class MySQLConnection extends Connection
      */
     protected function createDriverInstance(): PDO
     {
-        if (isset($this->options['unix_socket'])) {
+        if (isset($this->options['unix_socket']) && $this->options['unix_socket']) {
             $dsn = sprintf('mysql:unix_socket=%s;dbname=%s;charset=%s',
                 $this->options['unix_socket'], $this->options['database'], $this->options['charset']);
         } else {
