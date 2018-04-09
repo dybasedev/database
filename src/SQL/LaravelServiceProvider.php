@@ -18,7 +18,10 @@ class LaravelServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton(ConnectionManager::class, function (Container $app) {
-            return new ConnectionManager($app->make(Repository::class)->get('database'));
+            $manager = new ConnectionManager($app->make(Repository::class)->get('database'));
+            $manager->setContainer($app);
+
+            return $manager;
         });
     }
 }

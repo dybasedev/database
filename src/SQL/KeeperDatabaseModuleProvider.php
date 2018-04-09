@@ -18,7 +18,10 @@ class KeeperDatabaseModuleProvider implements ModuleProvider
     public function register(Container $container)
     {
         $container->singleton(ConnectionManager::class, function (Container $container) {
-            return new ConnectionManager($container->make(Repository::class)->get('database'));
+            $manager = new ConnectionManager($container->make(Repository::class)->get('database'));
+            $manager->setContainer($container);
+
+            return $manager;
         });
     }
 
