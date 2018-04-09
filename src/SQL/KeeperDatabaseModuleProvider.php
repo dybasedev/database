@@ -23,6 +23,13 @@ class KeeperDatabaseModuleProvider implements ModuleProvider
 
             return $manager;
         });
+
+        $container->bind(Connection::class, function (Container $container) {
+            /** @var ConnectionManager $manager */
+            $manager = $container->make(ConnectionManager::class);
+
+            return $manager->connection();
+        });
     }
 
     public function mount(Container $container)

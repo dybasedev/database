@@ -12,8 +12,20 @@ use Dybasedev\Database\ConnectionManager as BaseConnectionManager;
 use Dybasedev\Database\Exceptions\DriverNotSupportException;
 use Dybasedev\Database\SQL\Connections\MySQLConnection;
 
+/**
+ * Class ConnectionManager
+ *
+ * @method Connection connection($name = null)
+ *
+ * @package Dybasedev\Database\SQL
+ */
 class ConnectionManager extends BaseConnectionManager
 {
+    /**
+     * @param string $name
+     *
+     * @return \Dybasedev\Database\Connection|Connection|MySQLConnection
+     */
     public function createConnection($name)
     {
         switch ($this->config['connections'][$name]['driver']) {
